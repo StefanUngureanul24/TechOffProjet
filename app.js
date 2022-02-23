@@ -1,8 +1,9 @@
 const { application } = require('express');
 const express = require('express');
-const app = express();
+//const app = express();
 const mongoose = require('mongoose');
 const userSchema = require('./models/userSchema');
+const router = express.Router();
 
 app.use(express.json());
 
@@ -27,13 +28,16 @@ app.use((req, res, next) => {
 });
 */
 
+/*
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+*/
 
+/*
 app.use('/api/base', (req, res, next) => {
     const donnees = [
         { 
@@ -73,31 +77,26 @@ app.use('/api/base', (req, res, next) => {
         },
     ];
 });
+*/
 
+/*
 app.post('/api/base', (req, res, next) => {
-    /*
-    console.log(req.body);
-    res.status(201).json({
-      message: 'Objet créé !'
-    });*/
-
     delete req.body.id;
     const userSchema = new userSchema({
-        /* 
-            Copier tous les éléments de req.body
-        */
+         //Copier tous les éléments de req.body
         ...req.body
     });
-    /* 
-        Enregistrer les données dans la base
-    */
+    
+    //Enregistrer les données dans la base
     userSchema.save()
         // Réussite
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
         // Erreur
         .catch(error => res.status(400).json({ error }));
 });
+*/
 
+/*
 app.use('/api/base', (req, res, next) => {
     userSchema.find()
         // Réussite
@@ -123,6 +122,103 @@ app.delete('/api/base/:id', (req, res, next) => {
         .then(() => res.status(200).json({ message: 'Objet modifié!' }))
         .catch(error => res.status(400).json({ error }));
 });
+*/
+
+router.post('/', (req, res, next) => {
+    const userSchema = new userSchema({
+        id: req.body.id,
+        name: req.body.name,
+        type: req.body.type,
+        price: req.body.price,
+        rating: req.body.rating,
+        warranty_years: req.body.warranty_years,
+        availabe: req.body.availabe
+    });
+    userSchema.save().then(
+        () => {
+            res.status(201).json({
+                message: 'Post saved successfully!'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+});
+
+router.get('/:id', (req, res, next) => {
+    userSchema.findOne({
+        _id: req.params.id
+    }).then(
+        (userSchema) => {
+            res.status(200).json(userSchema);
+        }
+    ).catch(
+        (error) => {
+            res.status(404).json({
+                error: error
+            });
+        }
+    );
+})
+
+router.get('/:id', (req, res, next) => {
+    const userSchema = new userSchema({
+        id: req.body.id,
+        name: req.body.name,
+        type: req.body.type,
+        price: req.body.price,
+        rating: req.body.rating,
+        warranty_years: req.body.warranty_years,
+        availabe: req.body.availabe
+    });
+    userSchema.updateOne({_id: req.params.id}, userSchema).then(
+        () => {
+            res.status(201).json({
+                message: 'Object updated successfully!'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+});
+
+router.delete('/:id', (req, res, next) => {
+    userSchema.deleteOne({_id: req.params.id}).then(
+        () => {
+            res.status(200).json({
+                message: 'Deleted!'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    )
+});
+
+router.get('/' + '', (req, res, next) => {
+    userSchema.find().then(
+        (userSchema) => {
+            res.status(200).json(userSchema);
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+});
 
 mongoose.connect('mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -130,4 +226,4 @@ mongoose.connect('mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/tes
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-module.exports = app;
+module.exports = router;
