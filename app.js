@@ -1,6 +1,8 @@
+const { application } = require('express');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const userSchema = require('./models/userSchema');
 
 app.use(express.json());
 
@@ -32,10 +34,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/donnees', (req, res, next) => {
+app.use('/api/base', (req, res, next) => {
     const donnees = [
         { 
-            "_id" : 1, 
+            "id" : 1, 
             "name" : "AC1 Phone1", 
             "type" : "phone", 
             "price" : 200.05, 
@@ -44,7 +46,7 @@ app.use('/api/donnees', (req, res, next) => {
             "available" : true 
         },
         { 
-            "_id" : 2, 
+            "id" : 2, 
             "name" : "AC2 Phone2", 
             "type" : "phone", 
             "price" : 147.21, 
@@ -53,7 +55,7 @@ app.use('/api/donnees', (req, res, next) => {
             "available" : false 
         },
         { 
-            "_id" : 3, 
+            "id" : 3, 
             "name" : "AC3 Phone3", 
             "type" : "phone", 
             "price" : 150, 
@@ -61,7 +63,7 @@ app.use('/api/donnees', (req, res, next) => {
             "warranty_years" : 1, 
             "available" : true },
         { 
-            "_id" : 4, 
+            "id" : 4, 
             "name" : "AC4 Phone4", 
             "type" : "phone", 
             "price" : 50.20, 
@@ -72,14 +74,43 @@ app.use('/api/donnees', (req, res, next) => {
     ];
 });
 
-/*
-app.post('/api/stuff', (req, res, next) => {
+app.post('/api/base', (req, res, next) => {
+    /*
     console.log(req.body);
     res.status(201).json({
       message: 'Objet créé !'
+    });*/
+
+    delete req.body.id;
+    const userSchema = new userSchema({
+        /* 
+            Copier tous les éléments de req.body
+        */
+        ...req.body
     });
+    /* 
+        Enregistrer les données dans la base
+    */
+    userSchema.save()
+        // Réussite
+        .then(() => res.status(201).json({ message: 'Objet enregistré' }))
+        // Erreur
+        .catch(error => res.status(400).json({ error }));
 });
-*/
+
+app.use('/api/base', (req, res, next) => {
+    userSchema.find()
+        // Réussite
+        .then(userSchema => res.status(200).json(userSchema))
+        // Erreur
+        .catch(error => res.status(400).json({ error }));
+});
+
+app.get('api/base/:id', (req, res, next) => {
+    userSchema.findOne({ _id: req.params.id })
+        .then(userSchema => res.status(200).json(userSchema))
+        .catch(error => res.status(400).json({ error }));
+});
 
 mongoose.connect('mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
