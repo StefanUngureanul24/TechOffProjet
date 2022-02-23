@@ -4,8 +4,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userSchema = require('./models/userSchema');
 const router = express.Router();
+const objetsRoutes = require('./routes/objets')
 
 app.use(express.json());
+app.use('/api/objets', objetsRoutes);
 
 /*
 app.use((req, res, next) => {
