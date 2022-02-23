@@ -18,6 +18,7 @@
   "homepage": "https://github.com/StefanUngureanul24/TechOffProjet#readme",
   "dependencies": {
     "express": "^4.17.3",
+    "mongoose": "^6.2.3",
     "nodemon": "^2.0.15"
   }
 }
