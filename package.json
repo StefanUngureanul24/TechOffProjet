@@ -1,0 +1,23 @@
+{
+  "name": "techoffprojet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StefanUngureanul24/TechOffProjet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StefanUngureanul24/TechOffProjet/issues"
+  },
+  "homepage": "https://github.com/StefanUngureanul24/TechOffProjet#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}
