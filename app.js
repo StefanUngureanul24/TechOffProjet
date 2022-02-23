@@ -2,12 +2,11 @@ const { application } = require('express');
 const express = require('express');
 //const app = express();
 const mongoose = require('mongoose');
-const userSchema = require('./models/userSchema');
+const userSchema = require('./models/base');
 const router = express.Router();
 const objetsRoutes = require('./routes/objets')
 
-app.use(express.json());
-app.use('/api/objets', objetsRoutes);
+//app.use('/api/objets', objetsRoutes);
 
 /*
 app.use((req, res, next) => {
