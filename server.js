@@ -2,7 +2,9 @@
     Importation du packet HTTP
 */
 const http = require('http');
-const app = require('./app');
+
+var express = require('express');
+var app = express();
 
 const normalizePort = val => {
     const port = parseInt(val, 10);
@@ -41,12 +43,6 @@ const errorHandler = error => {
             throw error;
     }
 };
-
-/*
-const server = http.createServer((req, res) => {
-    res.end('Voilà la réponse du serveur !');
-}); 
-*/
 
 const server = http.createServer(app);
 
