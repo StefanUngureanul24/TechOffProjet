@@ -6,6 +6,9 @@ const http = require('http');
 var express = require('express');
 var app = express();
 
+let apiRoutes = require('./routes/objets');
+app.use('/api', apiRoutes);
+
 const normalizePort = val => {
     const port = parseInt(val, 10);
 
@@ -52,5 +55,7 @@ server.on('listening', () => {
     const bind = typeof address === 'string' ? 'pipe' + address : 'port ' + port;
     console.log('Listening on ' + bind); 
 });
+
+app.get('/', (req, res) => res.send('Bonjour, c\'est un test avec un mise à jour'));
 
 server.listen(port);
