@@ -1,7 +1,7 @@
 {
   "name": "techoffprojet",
   "version": "1.0.0",
-  "description": "",
+  "description": "Une application qui permet de manipuler de données d'un fichier JSON",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
