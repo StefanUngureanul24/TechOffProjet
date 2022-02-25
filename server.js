@@ -7,7 +7,10 @@ var express = require('express');
 var app = express();
 
 let apiRoutes = require('./routes/objets');
-app.use('/api', apiRoutes);
+
+// Import du Body parser et du mongoose 
+let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
 
 const normalizePort = val => {
     const port = parseInt(val, 10);
@@ -38,10 +41,12 @@ const errorHandler = error => {
             console.error(bind + ' requires elevated privileges.');
             process.exit(1);
             break;
-        case 'EADDRINUSE':
+        /*
+            case 'EADDRINUSE':
             console.error(bind + ' is already in use.');
             process.exit(1);
             break;
+        */
         default:
             throw error;
     }
@@ -56,6 +61,24 @@ server.on('listening', () => {
     console.log('Listening on ' + bind); 
 });
 
-app.get('/', (req, res) => res.send('Bonjour, c\'est un test avec un mise à jour'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+mongoose.connect('mongobd://localhost/resthub', {userNewUrlParser: true});
+var db = mongoose.connection;
+
+if (!db) 
+    console.log("Erreur lors de la connextion du db");
+else 
+    console.log("Connexion de la db réussie");
+
+    app.get('/', (req, res) => res.send('Bonjour, la connextion est réussie'));
 
 server.listen(port);
+
+app.use('/api', apiRoutes);
+app.listen(port, function() {
+    console.log("Running RestHub on port " + port);
+});
