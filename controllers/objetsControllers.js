@@ -100,7 +100,7 @@ exports.getAllStuff = (req, res, next) => {
 
 Model = require('../models/baseModel');
 
-exports.server = function(req, res) {
+exports.index = function(req, res) {
     Model.get(function (err, model) {
         if (err) {
             res.json({
