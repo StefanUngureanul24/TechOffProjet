@@ -1,3 +1,4 @@
+/*
 const userSchema = require('../models/base');
 
 exports.createObject = (req, res, next) => {
@@ -94,4 +95,87 @@ exports.getAllStuff = (req, res, next) => {
             });
         }
     );
+};
+*/
+
+Model = require('../models/baseModel');
+
+exports.server = function(req, res) {
+    Model.get(function (err, model) {
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
+        res.json({
+            status: "success",
+            message: "L'information extrait avec succès",
+            data: model
+        });
+    });
+};
+
+exports.new = function(req, res) {
+    var model = new Model();
+    model.name = req.body.name ? req.body.name : model.name;
+    model.type = req.body.type;
+    model.price = req.body.price;
+    model.rating = req.body.rating;
+    model.available = req.body.available;
+
+    model.save(function (err) {
+        if (err)
+            res.json(err);
+        
+        res.json({
+            message: 'Nouveau entrée créée',
+            data: model
+        });
+    });
+};
+
+exports.view = function (req, res) {
+    Model.findById(req.params.model_id, function (err, model) {
+        if (err)
+            res.send(err);
+        res.json({
+            message: 'Chargement du contenu des données',
+            data: model
+        });
+    });
+};
+
+exports.update = function (req, res) {
+    Model.findById(req.params.model_id, function (err, model) {
+        if (err)
+            res.send(err);
+        model.name = req.body.name ? req.body.name : model.name;
+        model.type = req.body.type;
+        model.price = req.body.price;
+        model.rating = req.body.rating;
+        model.available = req.body.available;       
+    
+        model.save(function (err) {
+            if (err)
+                res.json(err);
+            res.json({
+                message: 'Contact mis à jour',
+                data: model
+            }); 
+        });
+    });
+};
+
+exports.delete = function (req, res) {
+    Model.remove({
+        _id: req.params.model_id
+    }, function(err, model) {
+        if (err)
+            res.send(err);
+        res.json({
+            status: "succes",
+            message: 'Info supprimé'
+        });
+    });
 };
