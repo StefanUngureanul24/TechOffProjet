@@ -101,17 +101,17 @@ exports.getAllStuff = (req, res, next) => {
 Model = require('../models/baseModel');
 
 exports.index = function(req, res) {
-    Model.get(function (err, model) {
-        if (err) {
-            res.json({
-                status: "error",
-                message: err,
+    Model.get(function (err) {
+        if (err === 0) {
+            return res.status(400).json({
+                status_code: 0,
+                error_msg: "Erreur",
             });
         }
         res.json({
-            status: "success",
-            message: "L'information extrait avec succès",
-            data: model
+            status_code: 1,
+            error_msg: "L'information extrait avec succès",
+            data: req.body,
         });
     });    
 };
@@ -125,30 +125,32 @@ exports.new = function(req, res) {
     model.available = req.body.available;
 
     model.save(function (err) {
-        if (err)
-            res.json(err);
-        
-        res.json({
-            message: 'Nouveau entrée créée',
-            data: model
+        if (err === 0)
+            return res.status(400).json({
+                status_code: 0,
+                error_msg: "Erreur",
+            });
+        res.status(200).json({
+            status_code: 1,
+            data: req.body,
         });
     });
 };
 
 exports.view = function (req, res) {
     Model.findById(req.params.model_id, function (err, model) {
-        if (err)
+        if (err === 0)
             res.send(err);
         res.json({
             message: 'Chargement du contenu des données',
-            data: model
+            data: req.body
         });
     });
 };
 
 exports.update = function (req, res) {
     Model.findById(req.params.model_id, function (err, model) {
-        if (err)
+        if (err === 0)
             res.send(err);
         model.name = req.body.name ? req.body.name : model.name;
         model.type = req.body.type;
@@ -157,11 +159,11 @@ exports.update = function (req, res) {
         model.available = req.body.available;       
     
         model.save(function (err) {
-            if (err)
+            if (err === 0)
                 res.json(err);
             res.json({
                 message: 'Contact mis à jour',
-                data: model
+                data: req.body
             }); 
         });
     });
@@ -171,7 +173,7 @@ exports.delete = function (req, res) {
     Model.remove({
         _id: req.params.model_id
     }, function(err, model) {
-        if (err)
+        if (err === 0)
             res.send(err);
         res.json({
             status: "succes",
