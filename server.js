@@ -54,8 +54,17 @@ const errorHandler = error => {
 
 const server = http.createServer(app);
 
+/*
 server.on('error', errorHandler);
 server.on('listening', () => {
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe' + address : 'port ' + port;
+    console.log('Listening on ' + bind); 
+});
+*/
+
+app.on('error', errorHandler);
+app.on('listening', () => {
     const address = server.address();
     const bind = typeof address === 'string' ? 'pipe' + address : 'port ' + port;
     console.log('Listening on ' + bind); 
@@ -66,7 +75,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-mongoose.connect('mongobd://localhost/resthub', {userNewUrlParser: true});
+mongoose.connect('mongodb://localhost/resthub', {useNewUrlParser: true});
 var db = mongoose.connection;
 
 if (!db) 
@@ -74,9 +83,9 @@ if (!db)
 else 
     console.log("Connexion de la db réussie");
 
-    app.get('/', (req, res) => res.send('Bonjour, la connextion est réussie'));
+app.get('/', (req, res) => res.send('Bonjour, la connextion est réussie'));
 
-server.listen(port);
+//server.listen(port);
 
 app.use('/api', apiRoutes);
 app.listen(port, function() {
