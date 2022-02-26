@@ -6,7 +6,7 @@ const http = require('http');
 var express = require('express');
 var app = express();
 
-let apiRoutes = require('./routes/objets');
+let apiRoutes = require('./routes/api-routes');
 
 // Import du Body parser et du mongoose 
 let bodyParser = require('body-parser');
@@ -41,12 +41,10 @@ const errorHandler = error => {
             console.error(bind + ' requires elevated privileges.');
             process.exit(1);
             break;
-        /*
             case 'EADDRINUSE':
             console.error(bind + ' is already in use.');
             process.exit(1);
             break;
-        */
         default:
             throw error;
     }
@@ -91,3 +89,4 @@ app.use('/api', apiRoutes);
 app.listen(port, function() {
     console.log("Running RestHub on port " + port);
 });
+

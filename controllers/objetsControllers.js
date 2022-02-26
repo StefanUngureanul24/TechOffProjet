@@ -113,11 +113,11 @@ exports.index = function(req, res) {
             message: "L'information extrait avec succès",
             data: model
         });
-    });
+    });    
 };
 
 exports.new = function(req, res) {
-    var model = new Model();
+    var model = new modelSchema();
     model.name = req.body.name ? req.body.name : model.name;
     model.type = req.body.type;
     model.price = req.body.price;

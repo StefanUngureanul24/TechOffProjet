@@ -1,10 +1,13 @@
+/*
 const { application } = require('express');
 const express = require('express');
 //const app = express();
 const mongoose = require('mongoose');
-const userSchema = require('./models/base');
+//const userSchema = require('');
+const model = require('./models/baseModel');
 const router = express.Router();
-const objetsRoutes = require('./routes/objets')
+const objetsRoutes = require('./routes/api-routes');
+*/
 
 //app.use('/api/objets', objetsRoutes);
 
@@ -125,6 +128,7 @@ app.delete('/api/base/:id', (req, res, next) => {
 });
 */
 
+/*
 router.post('/', (req, res, next) => {
     const userSchema = new userSchema({
         id: req.body.id,
@@ -227,4 +231,4 @@ mongoose.connect('mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/tes
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-module.exports = router;
+module.exports = router;*/

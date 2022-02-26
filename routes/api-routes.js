@@ -35,14 +35,14 @@ router.get('/', function (req, res) {
     });
 });
 
-const { route } = require('../app');
+//const { route } = require('../app');
 var modelController = require('../controllers/objetsControllers');
 
-router.route('/information')
+router.route('/model')
     .get(modelController.index)
     .post(modelController.new);
 
-router.route('/information/:model_id')
+router.route('/model/:model_id')
     .get(modelController.view)
     .patch(modelController.update)
     .put(modelController.update)
